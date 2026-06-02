@@ -6,12 +6,6 @@
 // https://docs.tosspayments.com/reference/test-card
 const TOSS_CLIENT_KEY = "test_ck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 
-// PortOne sample merchant code from their official docs.
-// https://developers.portone.io/docs/ko/sdk/javascript-sdk-v1/payrequest
-// For your own real test merchant, sign up free at https://admin.portone.io
-// and replace this with the merchant code from 결제연동 → 식별코드.
-const PORTONE_MERCHANT_CODE = "imp10391932";
-
 // Stripe publishable test key (one of Stripe's public sample keys).
 // For real demo, swap for your own pk_test_... at https://dashboard.stripe.com/test/apikeys
 const STRIPE_PUBLISHABLE_KEY = "pk_test_TYooMQauvdEDq54NiTphI7jx";
@@ -19,7 +13,6 @@ const STRIPE_PUBLISHABLE_KEY = "pk_test_TYooMQauvdEDq54NiTphI7jx";
 declare global {
   interface Window {
     TossPayments?: (clientKey: string) => any;
-    IMP?: { init: (code: string) => void; request_pay: (params: any, cb: (rsp: any) => void) => void };
     Stripe?: (publishableKey: string) => any;
   }
 }
@@ -97,11 +90,10 @@ document.querySelectorAll<HTMLButtonElement>(".pay-btn").forEach((btn) => {
     if (!current) return;
     const method = btn.dataset.method;
     switch (method) {
-      case "stripe":  return payWithStripe(current);
-      case "toss":    return payWithToss(current);
-      case "portone": return payWithPortone(current);
-      case "kakao":   return payWithKakaoMock(current);
-      case "naver":   return payWithNaverMock(current);
+      case "stripe": return payWithStripe(current);
+      case "toss":   return payWithToss(current);
+      case "kakao":  return payWithKakaoMock(current);
+      case "naver":  return payWithNaverMock(current);
     }
   });
 });
@@ -144,32 +136,6 @@ function payWithToss(p: Product) {
     successUrl: `${location.origin}/success?provider=toss`,
     failUrl:    `${location.origin}/fail?provider=toss`,
   }).catch((err: any) => showToast(`Toss 오류: ${err?.message ?? err}`, false));
-}
-
-// ---- PortOne ----
-function payWithPortone(p: Product) {
-  closeModal();
-  const IMP = window.IMP;
-  if (!IMP) return showToast("PortOne SDK 로드 실패", false);
-  IMP.init(PORTONE_MERCHANT_CODE);
-  IMP.request_pay(
-    {
-      pg: "html5_inicis.INIpayTest",
-      pay_method: "card",
-      merchant_uid: uniqueOrderId("portone"),
-      name: p.name,
-      amount: p.priceKrw,
-      buyer_email: "test@example.com",
-      buyer_name: "테스트 사용자",
-    },
-    (rsp: any) => {
-      if (rsp.success) {
-        window.location.href = `/success?provider=portone&id=${encodeURIComponent(rsp.imp_uid)}`;
-      } else {
-        showToast(`PortOne 결제 실패: ${rsp.error_msg ?? "취소"}`, false);
-      }
-    },
-  );
 }
 
 // ---- KakaoPay mock ----

@@ -3,7 +3,7 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.tosspayments.com https://cdn.iamport.kr https://js.stripe.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.stripe.com https://*.tosspayments.com https://*.iamport.kr; frame-src https://checkout.stripe.com https://*.tosspayments.com https://*.iamport.kr https://service.iamport.kr; form-action 'self' https://api.stripe.com; base-uri 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.tosspayments.com https://js.stripe.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.stripe.com https://*.tosspayments.com; frame-src https://checkout.stripe.com https://*.tosspayments.com; form-action 'self' https://api.stripe.com; base-uri 'self'; upgrade-insecure-requests
 
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable

@@ -16,9 +16,8 @@ import products from "../data/products.json";
     />
     <!-- Payment provider SDKs (all in sandbox/test mode).
          is:inline keeps them as plain <script src> tags so Astro/Vite
-         doesn't add `crossorigin` and trip Toss's CDN CORS rule. -->
+         doesn't add `crossorigin` and trip provider CDN CORS rules. -->
     <script is:inline src="https://js.tosspayments.com/v1/payment"></script>
-    <script is:inline src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <script is:inline src="https://js.stripe.com/v3/"></script>
   </head>
   <body>
@@ -82,7 +81,6 @@ import products from "../data/products.json";
         <ul class="space-y-2 text-sm">
           <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-emerald-400"></span><strong>Stripe</strong> · 카드 (USD) — sandbox keys, no business cert</li>
           <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-emerald-400"></span><strong>Toss Payments</strong> · 카드 / 계좌이체 (KRW) — 토스 공개 테스트 키</li>
-          <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-emerald-400"></span><strong>PortOne (포트원)</strong> · 통합 PG — 테스트 가맹점</li>
           <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-amber-400"></span><strong>KakaoPay</strong> · 모의 — 실제 운영시 사업자등록증 필요</li>
           <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-amber-400"></span><strong>NaverPay</strong> · 모의 — 실제 운영시 사업자등록증 필요</li>
         </ul>
@@ -136,21 +134,6 @@ import products from "../data/products.json";
               <div class="text-left">
                 <div class="text-sm font-medium">Toss Payments</div>
                 <div class="text-[11px] text-[var(--color-fg-mute)]">카드 / 계좌이체 · KRW · 테스트</div>
-              </div>
-            </div>
-            <span class="text-xs text-emerald-400">LIVE TEST</span>
-          </button>
-
-          <button
-            type="button"
-            class="pay-btn flex items-center justify-between px-5 py-4 rounded-xl border border-[var(--color-line-strong)] hover:bg-white/5 transition-colors"
-            data-method="portone"
-          >
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-lg bg-[#FF5C00] grid place-items-center text-white text-xs font-bold">P</div>
-              <div class="text-left">
-                <div class="text-sm font-medium">PortOne · 포트원</div>
-                <div class="text-[11px] text-[var(--color-fg-mute)]">통합 PG · 테스트 가맹점</div>
               </div>
             </div>
             <span class="text-xs text-emerald-400">LIVE TEST</span>
