@@ -9,177 +9,232 @@ import products from "../data/products.json";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Payment Test App — Sandbox Demo</title>
+    <title>쇼핑몰 결제 데모 — payment test</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
     />
-    <!-- Payment provider SDKs (all in sandbox/test mode).
-         is:inline keeps them as plain <script src> tags so Astro/Vite
-         doesn't add `crossorigin` and trip provider CDN CORS rules. -->
+    <!-- Payment SDKs (sandbox). is:inline so Astro doesn't add crossorigin. -->
     <script is:inline src="https://js.tosspayments.com/v1/payment"></script>
     <script is:inline src="https://js.stripe.com/v3/"></script>
   </head>
-  <body>
-    <header class="border-b border-[var(--color-line)]">
-      <div class="max-w-5xl mx-auto px-6 py-6 flex items-baseline justify-between gap-4">
-        <div>
-          <h1 class="text-xl lg:text-2xl font-semibold tracking-[-0.02em]">Payment Test App</h1>
-          <p class="text-xs uppercase tracking-[0.22em] text-[var(--color-fg-mute)] mt-1">
-            Sandbox · Astro 5 · Cloudflare Workers
-          </p>
+  <body class="bg-[var(--color-bg)]">
+    <!-- Top banner -->
+    <div class="bg-[var(--color-bg-soft)] border-b border-[var(--color-border)] text-[12px] text-[var(--color-mute)]">
+      <div class="container-x flex items-center justify-between h-9">
+        <span>NPAY 멤버 가입 시 첫 결제 5% 할인 · <span class="text-[var(--color-naver)]">자세히 보기</span></span>
+        <div class="hidden sm:flex items-center gap-4">
+          <a href="#" class="hover:text-[var(--color-ink)]">고객센터</a>
+          <a href="#" class="hover:text-[var(--color-ink)]">로그인</a>
+          <a href="#" class="hover:text-[var(--color-ink)]">회원가입</a>
         </div>
-        <a
-          href="https://github.com/rowlow0gold-ops/payment-test-app"
-          target="_blank"
-          rel="noreferrer"
-          class="text-xs text-[var(--color-fg-mute)] hover:text-white transition-colors"
-        >
-          GitHub →
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header class="border-b border-[var(--color-border)] bg-white">
+      <div class="container-x flex items-center justify-between h-16">
+        <a href="/" class="flex items-baseline gap-1">
+          <span class="text-2xl font-bold tracking-tight">
+            <span style="color: var(--color-naver)">N</span>SHOP
+          </span>
+          <span class="text-[11px] text-[var(--color-mute)]">결제 데모</span>
         </a>
+        <div class="hidden md:flex flex-1 max-w-xl mx-8">
+          <div class="flex w-full border-2 border-[var(--color-naver)] rounded">
+            <input
+              type="search"
+              placeholder="상품, 브랜드 검색"
+              class="flex-1 px-3 py-2 text-sm bg-transparent outline-none"
+            />
+            <button class="px-4 bg-[var(--color-naver)] text-white text-sm" aria-label="검색">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+                <path d="M21 21l-4.5-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <nav class="flex items-center gap-5 text-sm text-[var(--color-ink-soft)]">
+          <a href="#" class="hover:text-[var(--color-naver)] hidden sm:inline">관심상품</a>
+          <a href="#" class="hover:text-[var(--color-naver)] hidden sm:inline">주문/배송</a>
+          <button type="button" class="relative">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M3 7h18l-2 11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L3 7zM3 7l1.5-3h15L21 7" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="9" cy="20" r="1" fill="currentColor"/>
+              <circle cx="17" cy="20" r="1" fill="currentColor"/>
+            </svg>
+            <span class="absolute -top-1 -right-2 bg-[var(--color-price)] text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">{products.products.length}</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Category strip -->
+      <div class="border-t border-[var(--color-border)] bg-white">
+        <div class="container-x flex items-center gap-6 h-11 text-[13px] overflow-x-auto whitespace-nowrap">
+          <a href="#" class="text-[var(--color-naver)] font-medium border-b-2 border-[var(--color-naver)] h-full flex items-center">베스트</a>
+          <a href="#" class="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">패션</a>
+          <a href="#" class="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">디지털</a>
+          <a href="#" class="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">생활/건강</a>
+          <a href="#" class="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">식품</a>
+          <a href="#" class="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">스포츠/레저</a>
+          <a href="#" class="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">화장품/미용</a>
+          <a href="#" class="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">출산/육아</a>
+        </div>
       </div>
     </header>
 
-    <main class="max-w-5xl mx-auto px-6 py-10 lg:py-14">
-      <section class="mb-10">
-        <p class="text-[var(--color-fg-mute)] text-sm leading-relaxed max-w-2xl">
-          Each product can be checked out via 5 payment systems below. <strong class="text-white">All run in sandbox mode</strong> — no real money moves. Pick any item, then click a payment provider.
-        </p>
+    <main>
+      <!-- Section title -->
+      <section class="container-x pt-8 pb-4">
+        <div class="flex items-baseline justify-between">
+          <div>
+            <h1 class="text-xl lg:text-2xl font-bold">오늘의 추천</h1>
+            <p class="text-[13px] text-[var(--color-mute)] mt-1">샌드박스 결제 데모 · 실제 결제는 발생하지 않습니다</p>
+          </div>
+          <a href="#" class="text-[13px] text-[var(--color-mute)] hover:text-[var(--color-ink)]">전체보기 ›</a>
+        </div>
       </section>
 
-      <section class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-        {products.products.map((p) => (
-          <article class="rounded-2xl overflow-hidden border border-[var(--color-line)] bg-[var(--color-ink-soft)]" data-product-id={p.id} data-product-name={p.name_ko} data-product-price-krw={p.price_krw} data-product-price-usd={p.price_usd}>
-            <div class="aspect-[16/10] overflow-hidden">
-              <img src={p.image} alt={p.name_ko} loading="lazy" class="w-full h-full object-cover" />
-            </div>
-            <div class="p-6 lg:p-7 flex flex-col gap-3">
-              <div class="text-xs uppercase tracking-[0.22em] text-[var(--color-fg-mute)]">{p.id}</div>
-              <h2 class="text-lg lg:text-xl font-semibold">{p.name_ko}</h2>
-              <p class="text-sm text-[var(--color-fg-mute)] leading-relaxed">{p.summary_ko}</p>
-              <div class="flex items-baseline justify-between mt-2">
-                <div class="flex items-baseline gap-3">
-                  <span class="text-2xl font-semibold">₩{p.price_krw.toLocaleString("ko-KR")}</span>
-                  <span class="text-xs text-[var(--color-fg-mute)]">${p.price_usd}</span>
+      <!-- Product grid -->
+      <section class="container-x pb-12">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
+          {products.products.map((p) => (
+            <article
+              class="bg-white border border-[var(--color-border)] hover:border-[var(--color-border-2)] transition-colors"
+              data-product-id={p.id}
+              data-product-name={p.name_ko}
+              data-product-price-krw={p.price_krw}
+              data-product-price-usd={p.price_usd}
+            >
+              <a href="#" class="block aspect-square overflow-hidden bg-[var(--color-bg-soft)]">
+                <img src={p.image} alt={p.name_ko} loading="lazy" class="w-full h-full object-cover" />
+              </a>
+              <div class="p-3 lg:p-4 flex flex-col gap-1.5">
+                <div class="text-[11px] text-[var(--color-naver)] font-semibold">NPAY · 무료배송</div>
+                <h2 class="text-[13px] lg:text-[14px] text-[var(--color-ink)] leading-snug line-clamp-2 min-h-[2.6em]">
+                  {p.name_ko}
+                </h2>
+                <p class="text-[11px] text-[var(--color-mute)] line-clamp-1">{p.summary_ko}</p>
+                <div class="flex items-baseline gap-2 mt-1">
+                  <span class="text-lg font-bold text-[var(--color-ink)]">₩{p.price_krw.toLocaleString("ko-KR")}</span>
+                </div>
+                <div class="flex items-center gap-2 text-[11px] text-[var(--color-mute)]">
+                  <span class="text-amber-500">★</span>
+                  <span>4.{Math.floor(Math.random() * 5) + 3}</span>
+                  <span>리뷰 {Math.floor(Math.random() * 900) + 100}</span>
                 </div>
                 <button
                   type="button"
-                  class="px-4 py-2 rounded-full bg-white text-[var(--color-ink)] text-sm font-medium hover:bg-[var(--color-accent)] hover:text-white transition-colors"
+                  class="mt-2 w-full btn-naver text-sm font-semibold py-2 rounded"
                   data-buy={p.id}
                 >
-                  결제하기 →
+                  구매하기
                 </button>
               </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))}
+        </div>
       </section>
 
-      <!-- Payment provider matrix info -->
-      <section class="mt-14 p-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-ink-soft)]">
-        <h3 class="text-sm uppercase tracking-[0.22em] text-[var(--color-fg-mute)] mb-4">Payment options · sandbox status</h3>
-        <ul class="space-y-2 text-sm">
-          <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-emerald-400"></span><strong>Stripe</strong> · 카드 (USD) — sandbox keys, no business cert</li>
-          <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-emerald-400"></span><strong>Toss Payments</strong> · 카드 / 계좌이체 (KRW) — 토스 공개 테스트 키</li>
-          <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-amber-400"></span><strong>KakaoPay</strong> · 모의 — 실제 운영시 사업자등록증 필요</li>
-          <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-amber-400"></span><strong>NaverPay</strong> · 모의 — 실제 운영시 사업자등록증 필요</li>
-        </ul>
+      <!-- Sandbox notice -->
+      <section class="container-x mb-12">
+        <div class="border border-[var(--color-border)] bg-[var(--color-bg-soft)] p-5 rounded">
+          <h3 class="text-sm font-bold mb-3">결제 수단 안내 · 샌드박스</h3>
+          <ul class="space-y-1.5 text-[13px] text-[var(--color-ink-soft)]">
+            <li>· <strong class="text-[var(--color-ink)]">Stripe</strong> — 실제 테스트 결제창 (USD)</li>
+            <li>· <strong class="text-[var(--color-ink)]">Toss Payments</strong> — 실제 테스트 결제창 (KRW)</li>
+            <li>· <strong class="text-[var(--color-ink)]">KakaoPay</strong> — 모의 결제 (실서비스는 사업자등록증 필요)</li>
+            <li>· <strong class="text-[var(--color-ink)]">NaverPay</strong> — 모의 결제 (실서비스는 사업자등록증 필요)</li>
+          </ul>
+        </div>
       </section>
     </main>
 
-    <!-- Payment provider chooser modal -->
+    <!-- Footer -->
+    <footer class="bg-[var(--color-bg-soft)] border-t border-[var(--color-border)] py-8">
+      <div class="container-x text-[12px] text-[var(--color-mute)] leading-relaxed">
+        <div class="flex flex-wrap gap-x-4 gap-y-1 mb-3">
+          <a href="#" class="hover:text-[var(--color-ink)]">회사소개</a>
+          <a href="#" class="hover:text-[var(--color-ink)]">이용약관</a>
+          <a href="#" class="hover:text-[var(--color-ink)]"><strong>개인정보처리방침</strong></a>
+          <a href="#" class="hover:text-[var(--color-ink)]">청소년보호정책</a>
+          <a href="#" class="hover:text-[var(--color-ink)]">고객센터</a>
+        </div>
+        <p>(주)NSHOP 데모 · 사업자등록번호 000-00-00000 · 대표 홍길동</p>
+        <p>본 사이트는 결제 연동 포트폴리오 데모이며, 실제 상거래가 발생하지 않습니다.</p>
+        <p class="mt-2">© 2026 payment-test-app</p>
+      </div>
+    </footer>
+
+    <!-- Payment modal -->
     <div
       id="pay-modal"
-      class="hidden fixed inset-0 z-50 items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+      class="hidden fixed inset-0 z-50 items-center justify-center bg-black/40 p-4"
       role="dialog"
       aria-modal="true"
     >
-      <div class="relative w-full max-w-md bg-[var(--color-ink-soft)] rounded-2xl border border-[var(--color-line)] overflow-hidden">
-        <button
-          type="button"
-          id="pay-close"
-          aria-label="닫기"
-          class="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 text-white text-xl"
-        >×</button>
-
-        <div class="bg-black/30 border-b border-[var(--color-line)] px-6 py-5">
-          <div class="text-xs uppercase tracking-[0.22em] text-[var(--color-fg-mute)] mb-1">결제 수단 선택</div>
-          <div id="pay-product-name" class="text-lg font-semibold leading-tight"></div>
-          <div id="pay-product-price" class="text-sm text-[var(--color-fg-mute)] mt-1"></div>
+      <div class="w-full max-w-md bg-white border border-[var(--color-border-2)] rounded shadow-xl">
+        <div class="flex items-center justify-between border-b border-[var(--color-border)] px-5 py-4">
+          <div>
+            <h2 id="pay-product-name" class="text-base font-bold leading-tight"></h2>
+            <p id="pay-product-price" class="text-[13px] text-[var(--color-mute)] mt-0.5"></p>
+          </div>
+          <button id="pay-close" aria-label="닫기" class="text-2xl text-[var(--color-mute)] hover:text-[var(--color-ink)] leading-none">×</button>
         </div>
 
-        <div class="p-6 flex flex-col gap-3">
-          <button
-            type="button"
-            class="pay-btn flex items-center justify-between px-5 py-4 rounded-xl border border-[var(--color-line-strong)] hover:bg-white/5 transition-colors"
-            data-method="stripe"
-          >
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-lg bg-[#635BFF] grid place-items-center text-white text-xs font-bold">S</div>
-              <div class="text-left">
-                <div class="text-sm font-medium">Stripe</div>
-                <div class="text-[11px] text-[var(--color-fg-mute)]">카드 · USD · sandbox</div>
-              </div>
-            </div>
-            <span class="text-xs text-emerald-400">LIVE TEST</span>
-          </button>
-
-          <button
-            type="button"
-            class="pay-btn flex items-center justify-between px-5 py-4 rounded-xl border border-[var(--color-line-strong)] hover:bg-white/5 transition-colors"
-            data-method="toss"
-          >
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-lg bg-[#0064FF] grid place-items-center text-white text-xs font-bold">T</div>
-              <div class="text-left">
-                <div class="text-sm font-medium">Toss Payments</div>
-                <div class="text-[11px] text-[var(--color-fg-mute)]">카드 / 계좌이체 · KRW · 테스트</div>
-              </div>
-            </div>
-            <span class="text-xs text-emerald-400">LIVE TEST</span>
-          </button>
-
-          <button
-            type="button"
-            class="pay-btn flex items-center justify-between px-5 py-4 rounded-xl border border-[var(--color-line-strong)] hover:bg-white/5 transition-colors"
-            data-method="kakao"
-          >
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-lg bg-[#FEE500] grid place-items-center text-[#3C1E1E] text-xs font-bold">K</div>
-              <div class="text-left">
-                <div class="text-sm font-medium">KakaoPay</div>
-                <div class="text-[11px] text-[var(--color-fg-mute)]">모의 · 실서비스는 사업자등록증 필요</div>
-              </div>
-            </div>
-            <span class="text-xs text-amber-400">MOCK</span>
-          </button>
-
-          <button
-            type="button"
-            class="pay-btn flex items-center justify-between px-5 py-4 rounded-xl border border-[var(--color-line-strong)] hover:bg-white/5 transition-colors"
-            data-method="naver"
-          >
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-lg bg-[#03C75A] grid place-items-center text-white text-xs font-bold">N</div>
-              <div class="text-left">
-                <div class="text-sm font-medium">NaverPay</div>
-                <div class="text-[11px] text-[var(--color-fg-mute)]">모의 · 실서비스는 사업자등록증 필요</div>
-              </div>
-            </div>
-            <span class="text-xs text-amber-400">MOCK</span>
-          </button>
+        <div class="p-5">
+          <div class="text-[12px] text-[var(--color-mute)] mb-3 font-medium uppercase tracking-wider">결제 수단 선택</div>
+          <div class="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              class="pay-btn flex flex-col items-center gap-2 py-4 border border-[var(--color-border)] hover:border-[var(--color-naver)] rounded transition-colors"
+              data-method="naver"
+            >
+              <span class="font-bold text-sm" style="color: var(--color-naver)">N</span>
+              <span class="text-[12px] text-[var(--color-ink-soft)]">네이버페이</span>
+              <span class="text-[10px] text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">MOCK</span>
+            </button>
+            <button
+              type="button"
+              class="pay-btn flex flex-col items-center gap-2 py-4 border border-[var(--color-border)] hover:border-[#FEE500] rounded transition-colors"
+              data-method="kakao"
+            >
+              <span class="font-bold text-sm text-[#3C1E1E] bg-[#FEE500] w-7 h-7 rounded-full grid place-items-center">K</span>
+              <span class="text-[12px] text-[var(--color-ink-soft)]">카카오페이</span>
+              <span class="text-[10px] text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">MOCK</span>
+            </button>
+            <button
+              type="button"
+              class="pay-btn flex flex-col items-center gap-2 py-4 border border-[var(--color-border)] hover:border-[#0064FF] rounded transition-colors"
+              data-method="toss"
+            >
+              <span class="font-bold text-sm text-white bg-[#0064FF] w-7 h-7 rounded-full grid place-items-center">T</span>
+              <span class="text-[12px] text-[var(--color-ink-soft)]">토스페이먼츠</span>
+              <span class="text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">테스트</span>
+            </button>
+            <button
+              type="button"
+              class="pay-btn flex flex-col items-center gap-2 py-4 border border-[var(--color-border)] hover:border-[#635BFF] rounded transition-colors"
+              data-method="stripe"
+            >
+              <span class="font-bold text-sm text-white bg-[#635BFF] w-7 h-7 rounded-full grid place-items-center">S</span>
+              <span class="text-[12px] text-[var(--color-ink-soft)]">Stripe (해외)</span>
+              <span class="text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">테스트</span>
+            </button>
+          </div>
         </div>
 
-        <div class="px-6 py-4 border-t border-[var(--color-line)] bg-black/20">
-          <p class="text-[11px] text-[var(--color-fg-mute)] leading-relaxed">
-            Sandbox 모드에서는 실제 결제가 발생하지 않습니다. 테스트 카드는 각 PG 공식 문서를 참고하세요.
+        <div class="px-5 py-3 border-t border-[var(--color-border)] bg-[var(--color-bg-soft)]">
+          <p class="text-[11px] text-[var(--color-mute)] leading-relaxed">
+            샌드박스 모드 · 실제 결제는 발생하지 않습니다. 테스트 카드 정보는 각 PG 공식 문서를 참고하세요.
           </p>
         </div>
       </div>
     </div>
 
-    <!-- Toast for mock notices -->
-    <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] max-w-md w-[90%] px-5 py-4 rounded-xl bg-[var(--color-ink-soft)] border border-[var(--color-line-strong)] shadow-2xl text-sm"></div>
+    <!-- Toast -->
+    <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] max-w-md w-[90%] px-5 py-3 rounded bg-[var(--color-ink)] text-white text-sm shadow-lg"></div>
 
     <script>
       import "../scripts/payments.ts";

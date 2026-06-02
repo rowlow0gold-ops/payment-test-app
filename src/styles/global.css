@@ -1,19 +1,51 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #0A0E1A;
-  --color-ink-soft: #14182A;
-  --color-line: rgba(255,255,255,0.1);
-  --color-line-strong: rgba(255,255,255,0.22);
-  --color-fg: #FFFFFF;
-  --color-fg-mute: rgba(255,255,255,0.6);
-  --color-accent: #4F7CFF;
+  --color-bg:         #ffffff;
+  --color-bg-soft:    #f7f7f7;
+  --color-border:     #ebebeb;
+  --color-border-2:   #d4d4d4;
+  --color-ink:        #222222;
+  --color-ink-soft:   #555555;
+  --color-mute:       #8b8b8b;
+  --color-naver:      #03C75A;
+  --color-naver-dark: #00B14F;
+  --color-price:      #e8334f;
   --font-sans:
-    "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont,
-    "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    "Pretendard Variable", "Pretendard",
+    -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", system-ui, sans-serif;
 }
 
 @layer base {
-  html { background: #0A0E1A; color: #fff; font-family: var(--font-sans); -webkit-font-smoothing: antialiased; word-break: keep-all; }
-  body { background: #0A0E1A; min-height: 100dvh; }
+  * { box-sizing: border-box; }
+  html, body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100dvh; }
+  /* Korean: never split inside a word/particle. */
+  html { word-break: keep-all; }
+}
+
+@layer utilities {
+  .container-x {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  @media (min-width: 1024px) {
+    .container-x { padding-left: 1.5rem; padding-right: 1.5rem; }
+  }
+  .btn-naver {
+    background: var(--color-naver);
+    color: #fff;
+    transition: background-color 0.15s ease;
+  }
+  .btn-naver:hover { background: var(--color-naver-dark); }
 }

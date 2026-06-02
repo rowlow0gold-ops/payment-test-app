@@ -12,25 +12,34 @@ const message = url.searchParams.get("message") || url.searchParams.get("code") 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Payment Failed</title>
+    <title>결제 실패 · NSHOP</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
     />
   </head>
-  <body class="min-h-screen grid place-items-center">
-    <main class="w-full max-w-md px-6 py-12">
-      <div class="rounded-2xl border border-[var(--color-line-strong)] bg-[var(--color-ink-soft)] p-8 lg:p-10 text-center">
-        <div class="w-16 h-16 mx-auto rounded-full bg-rose-500/15 grid place-items-center mb-6">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-            <path d="M6 6l12 12M18 6L6 18" stroke="rgb(251, 113, 133)" stroke-width="2.5" stroke-linecap="round"/>
+  <body class="min-h-screen bg-[var(--color-bg-soft)]">
+    <header class="bg-white border-b border-[var(--color-border)]">
+      <div class="container-x flex items-center h-16">
+        <a href="/" class="text-2xl font-bold">
+          <span style="color: var(--color-naver)">N</span>SHOP
+        </a>
+      </div>
+    </header>
+
+    <main class="container-x py-10 lg:py-14 max-w-2xl">
+      <div class="bg-white border border-[var(--color-border)] rounded p-8 lg:p-12 text-center">
+        <div class="w-14 h-14 mx-auto rounded-full grid place-items-center mb-5" style="background:#fef2f2;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M6 6l12 12M18 6L6 18" stroke="#e8334f" stroke-width="2.5" stroke-linecap="round"/>
           </svg>
         </div>
-        <h1 class="text-2xl font-semibold tracking-[-0.02em]">결제 실패</h1>
-        <p class="mt-3 text-sm text-[var(--color-fg-mute)]">{provider} · {message}</p>
-        <a href="/" class="mt-8 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white text-[var(--color-ink)] font-medium text-sm">
-          ← 돌아가기
-        </a>
+        <h1 class="text-2xl font-bold">결제에 실패했습니다</h1>
+        <p class="mt-2 text-sm text-[var(--color-mute)]">{provider} · {message}</p>
+
+        <div class="mt-8 flex justify-center gap-3">
+          <a href="/" class="btn-naver px-5 py-2.5 text-sm font-semibold rounded">돌아가기</a>
+        </div>
       </div>
     </main>
   </body>
