@@ -1,0 +1,203 @@
+---
+import "../styles/global.css";
+import products from "../data/products.json";
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Payment Test App — Sandbox Demo</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
+    />
+    <!-- Payment provider SDKs (all in sandbox/test mode) -->
+    <script src="https://js.tosspayments.com/v1/payment"></script>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+  </head>
+  <body>
+    <header class="border-b border-[var(--color-line)]">
+      <div class="max-w-5xl mx-auto px-6 py-6 flex items-baseline justify-between gap-4">
+        <div>
+          <h1 class="text-xl lg:text-2xl font-semibold tracking-[-0.02em]">Payment Test App</h1>
+          <p class="text-xs uppercase tracking-[0.22em] text-[var(--color-fg-mute)] mt-1">
+            Sandbox · Astro 5 · Cloudflare Workers
+          </p>
+        </div>
+        <a
+          href="https://github.com/rowlow0gold-ops/payment-test-app"
+          target="_blank"
+          rel="noreferrer"
+          class="text-xs text-[var(--color-fg-mute)] hover:text-white transition-colors"
+        >
+          GitHub →
+        </a>
+      </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-10 lg:py-14">
+      <section class="mb-10">
+        <p class="text-[var(--color-fg-mute)] text-sm leading-relaxed max-w-2xl">
+          Each product can be checked out via 5 payment systems below. <strong class="text-white">All run in sandbox mode</strong> — no real money moves. Pick any item, then click a payment provider.
+        </p>
+      </section>
+
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        {products.products.map((p) => (
+          <article class="rounded-2xl overflow-hidden border border-[var(--color-line)] bg-[var(--color-ink-soft)]" data-product-id={p.id} data-product-name={p.name_ko} data-product-price-krw={p.price_krw} data-product-price-usd={p.price_usd}>
+            <div class="aspect-[16/10] overflow-hidden">
+              <img src={p.image} alt={p.name_ko} loading="lazy" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-6 lg:p-7 flex flex-col gap-3">
+              <div class="text-xs uppercase tracking-[0.22em] text-[var(--color-fg-mute)]">{p.id}</div>
+              <h2 class="text-lg lg:text-xl font-semibold">{p.name_ko}</h2>
+              <p class="text-sm text-[var(--color-fg-mute)] leading-relaxed">{p.summary_ko}</p>
+              <div class="flex items-baseline justify-between mt-2">
+                <div class="flex items-baseline gap-3">
+                  <span class="text-2xl font-semibold">₩{p.price_krw.toLocaleString("ko-KR")}</span>
+                  <span class="text-xs text-[var(--color-fg-mute)]">${p.price_usd}</span>
+                </div>
+                <button
+                  type="button"
+                  class="px-4 py-2 rounded-full bg-white text-[var(--color-ink)] text-sm font-medium hover:bg-[var(--color-accent)] hover:text-white transition-colors"
+                  data-buy={p.id}
+                >
+                  결제하기 →
+                </button>
+              </div>
+            </div>
+          </article>
+        ))}
+      </section>
+
+      <!-- Payment provider matrix info -->
+      <section class="mt-14 p-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-ink-soft)]">
+        <h3 class="text-sm uppercase tracking-[0.22em] text-[var(--color-fg-mute)] mb-4">Payment options · sandbox status</h3>
+        <ul class="space-y-2 text-sm">
+          <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-emerald-400"></span><strong>Stripe</strong> · 카드 (USD) — sandbox keys, no business cert</li>
+          <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-emerald-400"></span><strong>Toss Payments</strong> · 카드 / 계좌이체 (KRW) — 토스 공개 테스트 키</li>
+          <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-emerald-400"></span><strong>PortOne (포트원)</strong> · 통합 PG — 테스트 가맹점</li>
+          <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-amber-400"></span><strong>KakaoPay</strong> · 모의 — 실제 운영시 사업자등록증 필요</li>
+          <li class="flex items-center gap-3"><span class="inline-flex w-2 h-2 rounded-full bg-amber-400"></span><strong>NaverPay</strong> · 모의 — 실제 운영시 사업자등록증 필요</li>
+        </ul>
+      </section>
+    </main>
+
+    <!-- Payment provider chooser modal -->
+    <div
+      id="pay-modal"
+      class="hidden fixed inset-0 z-50 items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="relative w-full max-w-md bg-[var(--color-ink-soft)] rounded-2xl border border-[var(--color-line)] overflow-hidden">
+        <button
+          type="button"
+          id="pay-close"
+          aria-label="닫기"
+          class="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 text-white text-xl"
+        >×</button>
+
+        <div class="bg-black/30 border-b border-[var(--color-line)] px-6 py-5">
+          <div class="text-xs uppercase tracking-[0.22em] text-[var(--color-fg-mute)] mb-1">결제 수단 선택</div>
+          <div id="pay-product-name" class="text-lg font-semibold leading-tight"></div>
+          <div id="pay-product-price" class="text-sm text-[var(--color-fg-mute)] mt-1"></div>
+        </div>
+
+        <div class="p-6 flex flex-col gap-3">
+          <button
+            type="button"
+            class="pay-btn flex items-center justify-between px-5 py-4 rounded-xl border border-[var(--color-line-strong)] hover:bg-white/5 transition-colors"
+            data-method="stripe"
+          >
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-[#635BFF] grid place-items-center text-white text-xs font-bold">S</div>
+              <div class="text-left">
+                <div class="text-sm font-medium">Stripe</div>
+                <div class="text-[11px] text-[var(--color-fg-mute)]">카드 · USD · sandbox</div>
+              </div>
+            </div>
+            <span class="text-xs text-emerald-400">LIVE TEST</span>
+          </button>
+
+          <button
+            type="button"
+            class="pay-btn flex items-center justify-between px-5 py-4 rounded-xl border border-[var(--color-line-strong)] hover:bg-white/5 transition-colors"
+            data-method="toss"
+          >
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-[#0064FF] grid place-items-center text-white text-xs font-bold">T</div>
+              <div class="text-left">
+                <div class="text-sm font-medium">Toss Payments</div>
+                <div class="text-[11px] text-[var(--color-fg-mute)]">카드 / 계좌이체 · KRW · 테스트</div>
+              </div>
+            </div>
+            <span class="text-xs text-emerald-400">LIVE TEST</span>
+          </button>
+
+          <button
+            type="button"
+            class="pay-btn flex items-center justify-between px-5 py-4 rounded-xl border border-[var(--color-line-strong)] hover:bg-white/5 transition-colors"
+            data-method="portone"
+          >
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-[#FF5C00] grid place-items-center text-white text-xs font-bold">P</div>
+              <div class="text-left">
+                <div class="text-sm font-medium">PortOne · 포트원</div>
+                <div class="text-[11px] text-[var(--color-fg-mute)]">통합 PG · 테스트 가맹점</div>
+              </div>
+            </div>
+            <span class="text-xs text-emerald-400">LIVE TEST</span>
+          </button>
+
+          <button
+            type="button"
+            class="pay-btn flex items-center justify-between px-5 py-4 rounded-xl border border-[var(--color-line-strong)] hover:bg-white/5 transition-colors"
+            data-method="kakao"
+          >
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-[#FEE500] grid place-items-center text-[#3C1E1E] text-xs font-bold">K</div>
+              <div class="text-left">
+                <div class="text-sm font-medium">KakaoPay</div>
+                <div class="text-[11px] text-[var(--color-fg-mute)]">모의 · 실서비스는 사업자등록증 필요</div>
+              </div>
+            </div>
+            <span class="text-xs text-amber-400">MOCK</span>
+          </button>
+
+          <button
+            type="button"
+            class="pay-btn flex items-center justify-between px-5 py-4 rounded-xl border border-[var(--color-line-strong)] hover:bg-white/5 transition-colors"
+            data-method="naver"
+          >
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-[#03C75A] grid place-items-center text-white text-xs font-bold">N</div>
+              <div class="text-left">
+                <div class="text-sm font-medium">NaverPay</div>
+                <div class="text-[11px] text-[var(--color-fg-mute)]">모의 · 실서비스는 사업자등록증 필요</div>
+              </div>
+            </div>
+            <span class="text-xs text-amber-400">MOCK</span>
+          </button>
+        </div>
+
+        <div class="px-6 py-4 border-t border-[var(--color-line)] bg-black/20">
+          <p class="text-[11px] text-[var(--color-fg-mute)] leading-relaxed">
+            Sandbox 모드에서는 실제 결제가 발생하지 않습니다. 테스트 카드는 각 PG 공식 문서를 참고하세요.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast for mock notices -->
+    <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] max-w-md w-[90%] px-5 py-4 rounded-xl bg-[var(--color-ink-soft)] border border-[var(--color-line-strong)] shadow-2xl text-sm"></div>
+
+    <script>
+      import "../scripts/payments.ts";
+    </script>
+  </body>
+</html>

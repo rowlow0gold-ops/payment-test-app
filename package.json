@@ -1,0 +1,23 @@
+{
+  "name": "payment-test-app",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "wrangler dev",
+    "deploy": "astro build && wrangler deploy",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.6.13",
+    "@tailwindcss/vite": "^4.1.7",
+    "astro": "^5.10.0",
+    "tailwindcss": "^4.1.7"
+  },
+  "devDependencies": {
+    "wrangler": "^4.95.0"
+  }
+}

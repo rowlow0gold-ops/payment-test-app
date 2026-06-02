@@ -1,0 +1,44 @@
+{
+  "products": [
+    {
+      "id": "starter-tee",
+      "name": "Engineer T-shirt — Starter",
+      "name_ko": "엔지니어 티셔츠 · 스타터",
+      "summary": "100% cotton · Pretendard wordmark print · S/M/L",
+      "summary_ko": "100% 코튼 · Pretendard 워드마크 프린트 · S/M/L",
+      "price_krw": 19000,
+      "price_usd": 14,
+      "image": "https://images.pexels.com/photos/8217442/pexels-photo-8217442.jpeg?auto=compress&cs=tinysrgb&w=900"
+    },
+    {
+      "id": "kubelet-hoodie",
+      "name": "Kubelet Hoodie",
+      "name_ko": "쿠벨릿 후디",
+      "summary": "Heavyweight cotton-poly · graphite · S/M/L/XL",
+      "summary_ko": "헤비웨이트 면혼방 · 그래파이트 · S/M/L/XL",
+      "price_krw": 59000,
+      "price_usd": 44,
+      "image": "https://images.pexels.com/photos/6311392/pexels-photo-6311392.jpeg?auto=compress&cs=tinysrgb&w=900"
+    },
+    {
+      "id": "sysctl-cap",
+      "name": "sysctl Cap",
+      "name_ko": "시스템 캡",
+      "summary": "Cotton twill · embroidered · One size",
+      "summary_ko": "면 트윌 · 자수 · 프리사이즈",
+      "price_krw": 29000,
+      "price_usd": 22,
+      "image": "https://images.pexels.com/photos/1162519/pexels-photo-1162519.jpeg?auto=compress&cs=tinysrgb&w=900"
+    },
+    {
+      "id": "consulting-hour",
+      "name": "Consulting · 1 hour",
+      "name_ko": "컨설팅 · 1시간",
+      "summary": "Cloud / SI / AI architecture review — 60min video call",
+      "summary_ko": "Cloud / SI / AI 아키텍처 리뷰 · 60분 화상 미팅",
+      "price_krw": 99000,
+      "price_usd": 75,
+      "image": "https://images.pexels.com/photos/3184405/pexels-photo-3184405.jpeg?auto=compress&cs=tinysrgb&w=900"
+    }
+  ]
+}
