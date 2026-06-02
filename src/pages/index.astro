@@ -14,10 +14,12 @@ import products from "../data/products.json";
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
     />
-    <!-- Payment provider SDKs (all in sandbox/test mode) -->
-    <script src="https://js.tosspayments.com/v1/payment"></script>
-    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
-    <script src="https://js.stripe.com/v3/"></script>
+    <!-- Payment provider SDKs (all in sandbox/test mode).
+         is:inline keeps them as plain <script src> tags so Astro/Vite
+         doesn't add `crossorigin` and trip Toss's CDN CORS rule. -->
+    <script is:inline src="https://js.tosspayments.com/v1/payment"></script>
+    <script is:inline src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <script is:inline src="https://js.stripe.com/v3/"></script>
   </head>
   <body>
     <header class="border-b border-[var(--color-line)]">

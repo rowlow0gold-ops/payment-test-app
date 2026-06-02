@@ -6,9 +6,11 @@
 // https://docs.tosspayments.com/reference/test-card
 const TOSS_CLIENT_KEY = "test_ck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 
-// PortOne test merchant code from their docs.
+// PortOne sample merchant code from their official docs.
 // https://developers.portone.io/docs/ko/sdk/javascript-sdk-v1/payrequest
-const PORTONE_MERCHANT_CODE = "imp00000000"; // sandbox demo merchant
+// For your own real test merchant, sign up free at https://admin.portone.io
+// and replace this with the merchant code from 결제연동 → 식별코드.
+const PORTONE_MERCHANT_CODE = "imp10391932";
 
 // Stripe publishable test key (one of Stripe's public sample keys).
 // For real demo, swap for your own pk_test_... at https://dashboard.stripe.com/test/apikeys
