@@ -6,9 +6,8 @@
 // https://developers.tosspayments.com/my/api-keys
 const TOSS_CLIENT_KEY = "test_ck_pP2YxJ4K87qbyRdvx659VRGZwXLO";
 
-// Stripe publishable test key (one of Stripe's public sample keys).
-// For real demo, swap for your own pk_test_... at https://dashboard.stripe.com/test/apikeys
-const STRIPE_PUBLISHABLE_KEY = "pk_test_TYooMQauvdEDq54NiTphI7jx";
+// Stripe publishable test key — yours from https://dashboard.stripe.com/test/apikeys
+const STRIPE_PUBLISHABLE_KEY = "pk_test_51TdvjBLKwb1RZRZEpqD0ycauTzEvZQjIbzyrC9ElqIcJgUTM1WSJENXcqBP4wwoIEFhyIXlSUVgSUh2RKGSGampR00cG2cEcy4";
 
 declare global {
   interface Window {

@@ -14,8 +14,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
       orderId: string;
     };
 
-    const env = (locals as any).runtime?.env ?? (globalThis as any).env ?? {};
-    const secret = env.STRIPE_SECRET_KEY as string | undefined;
+    // STRIPE_SECRET_KEY can arrive from three places depending on dev/runtime:
+    //   - locals.runtime.env (wrangler dev / deployed Worker via .dev.vars or secret)
+    //   - import.meta.env  (astro dev via .env)
+    //   - process.env       (node fallback)
+    const cfEnv = (locals as any).runtime?.env ?? {};
+    const secret = (cfEnv.STRIPE_SECRET_KEY
+      ?? (import.meta.env as any)?.STRIPE_SECRET_KEY
+      ?? (typeof process !== "undefined" ? process.env?.STRIPE_SECRET_KEY : undefined)) as string | undefined;
     const origin = new URL(request.url).origin;
 
     // Demo-mode fallback: no key set → return a fake success URL so the UI still flows.
