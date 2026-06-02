@@ -91,8 +91,6 @@ document.querySelectorAll<HTMLButtonElement>(".pay-btn").forEach((btn) => {
     switch (method) {
       case "stripe": return payWithStripe(current);
       case "toss":   return payWithToss(current);
-      case "kakao":  return payWithKakaoMock(current);
-      case "naver":  return payWithNaverMock(current);
     }
   });
 });
@@ -137,20 +135,3 @@ function payWithToss(p: Product) {
   }).catch((err: any) => showToast(`Toss 오류: ${err?.message ?? err}`, false));
 }
 
-// ---- KakaoPay mock ----
-function payWithKakaoMock(p: Product) {
-  closeModal();
-  showToast(`[MOCK] KakaoPay — ₩${p.priceKrw.toLocaleString()} 결제 시뮬레이션 진행`);
-  setTimeout(() => {
-    window.location.href = `/success?provider=kakao&id=${uniqueOrderId("kakao-mock")}&mock=1`;
-  }, 1200);
-}
-
-// ---- NaverPay mock ----
-function payWithNaverMock(p: Product) {
-  closeModal();
-  showToast(`[MOCK] NaverPay — ₩${p.priceKrw.toLocaleString()} 결제 시뮬레이션 진행`);
-  setTimeout(() => {
-    window.location.href = `/success?provider=naver&id=${uniqueOrderId("naver-mock")}&mock=1`;
-  }, 1200);
-}
