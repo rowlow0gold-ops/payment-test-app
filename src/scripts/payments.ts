@@ -2,9 +2,9 @@
 // No real charges. No real customer data captured.
 
 // ---- Public test keys (safe to commit) ----
-// Toss Payments official docs test client key.
-// https://docs.tosspayments.com/reference/test-card
-const TOSS_CLIENT_KEY = "test_ck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+// Toss Payments — your own API 개별연동 test client key.
+// https://developers.tosspayments.com/my/api-keys
+const TOSS_CLIENT_KEY = "test_ck_pP2YxJ4K87qbyRdvx659VRGZwXLO";
 
 // Stripe publishable test key (one of Stripe's public sample keys).
 // For real demo, swap for your own pk_test_... at https://dashboard.stripe.com/test/apikeys
