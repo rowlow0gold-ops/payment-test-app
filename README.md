@@ -24,21 +24,30 @@ Portfolio demo — single-page Astro 5 + Cloudflare Workers shop wired to **5 pa
 ## Run locally
 
 ```bash
+cp .env.example .env       # fill in your real test keys
 pnpm install
-pnpm run dev          # http://localhost:4321
+pnpm run dev               # http://localhost:4321
 ```
 
-## Use real Stripe test keys (optional)
+All payment keys live in `.env` (gitignored). See `.env.example` for which
+variables to set. The `PUBLIC_*` keys are exposed to the client bundle by
+Astro (this is normal — Stripe pk_test_ and Toss test_ck_ are designed to
+appear in browser code). `STRIPE_SECRET_KEY` is server-only.
 
-By default the Stripe button falls back to a fake success URL (no key set).
-To wire up real Stripe Checkout:
+## Deploy
 
-1. Get a `pk_test_...` and `sk_test_...` from https://dashboard.stripe.com/test/apikeys
-2. Put the secret on the Worker:
-   ```bash
-   pnpm wrangler secret put STRIPE_SECRET_KEY
-   ```
-3. (Optional) swap `STRIPE_PUBLISHABLE_KEY` in `src/scripts/payments.ts`
+```bash
+pnpm run deploy
+```
+
+For Cloudflare Workers Builds CI, set the same env vars in:
+**Cloudflare dashboard → your Worker → Settings → Variables and Secrets**
+
+| Variable | Type | Where to get |
+|---|---|---|
+| `STRIPE_SECRET_KEY` | **Secret** | https://dashboard.stripe.com/test/apikeys |
+| `PUBLIC_STRIPE_PUBLISHABLE_KEY` | Plain var | same page |
+| `PUBLIC_TOSS_CLIENT_KEY` | Plain var | https://developers.tosspayments.com/my/api-keys |
 
 ## Deploy
 

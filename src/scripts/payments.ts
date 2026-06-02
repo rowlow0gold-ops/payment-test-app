@@ -1,13 +1,10 @@
 // Payment provider launchers — all in sandbox/test mode.
 // No real charges. No real customer data captured.
 
-// ---- Public test keys (safe to commit) ----
-// Toss Payments — your own API 개별연동 test client key.
-// https://developers.tosspayments.com/my/api-keys
-const TOSS_CLIENT_KEY = "test_ck_pP2YxJ4K87qbyRdvx659VRGZwXLO";
-
-// Stripe publishable test key — yours from https://dashboard.stripe.com/test/apikeys
-const STRIPE_PUBLISHABLE_KEY = "pk_test_51TdvjBLKwb1RZRZEpqD0ycauTzEvZQjIbzyrC9ElqIcJgUTM1WSJENXcqBP4wwoIEFhyIXlSUVgSUh2RKGSGampR00cG2cEcy4";
+// ---- Public payment keys from env (PUBLIC_* prefix → exposed to client bundle) ----
+// Real values live in .env (gitignored). See .env.example for which vars to set.
+const TOSS_CLIENT_KEY        = import.meta.env.PUBLIC_TOSS_CLIENT_KEY        as string | undefined;
+const STRIPE_PUBLISHABLE_KEY = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY as string | undefined;
 
 declare global {
   interface Window {
@@ -121,6 +118,7 @@ async function payWithStripe(p: Product) {
 // ---- Toss Payments ----
 function payWithToss(p: Product) {
   closeModal();
+  if (!TOSS_CLIENT_KEY) return showToast("PUBLIC_TOSS_CLIENT_KEY가 .env에 설정되지 않았습니다.", false);
   const TossPayments = window.TossPayments;
   if (!TossPayments) return showToast("Toss SDK 로드 실패", false);
   const tp = TossPayments(TOSS_CLIENT_KEY);
