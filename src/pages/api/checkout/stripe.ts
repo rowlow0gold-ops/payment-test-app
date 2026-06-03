@@ -10,7 +10,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const body = await request.json() as {
       productId: string;
       productName: string;
-      priceKrw: number;
+      priceUsd: number;
       orderId: string;
     };
 
@@ -36,11 +36,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
     params.append("success_url", `${origin}/success?provider=stripe&session_id={CHECKOUT_SESSION_ID}`);
     params.append("cancel_url",  `${origin}/fail?provider=stripe`);
     params.append("client_reference_id", body.orderId);
-    // KRW is a zero-decimal currency in Stripe — pass the won amount as-is
-    // (NOT multiplied by 100). Stripe Checkout shows ₩{amount} to the buyer.
-    params.append("line_items[0][price_data][currency]", "krw");
+    // USD — Stripe expects cents (price × 100). Stripe Checkout shows $X.YZ
+    // and may display a local-currency conversion estimate to the buyer.
+    params.append("line_items[0][price_data][currency]", "usd");
     params.append("line_items[0][price_data][product_data][name]", body.productName);
-    params.append("line_items[0][price_data][unit_amount]", String(body.priceKrw));
+    params.append("line_items[0][price_data][unit_amount]", String(Math.round(body.priceUsd * 100)));
     params.append("line_items[0][quantity]", "1");
 
     const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {
