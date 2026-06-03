@@ -103,7 +103,7 @@ async function payWithStripe(p: Product) {
       body: JSON.stringify({
         productId: p.id,
         productName: p.name,
-        priceUsd: p.priceUsd,
+        priceKrw: p.priceKrw,
         orderId: uniqueOrderId("stripe"),
       }),
     });
