@@ -14,20 +14,33 @@ export const POST: APIRoute = async ({ request, locals }) => {
       orderId: string;
     };
 
-    // STRIPE_SECRET_KEY can arrive from three places depending on dev/runtime:
-    //   - locals.runtime.env (wrangler dev / deployed Worker via .dev.vars or secret)
-    //   - import.meta.env  (astro dev via .env)
-    //   - process.env       (node fallback)
-    const cfEnv = (locals as any).runtime?.env ?? {};
-    const secret = (cfEnv.STRIPE_SECRET_KEY
-      ?? (import.meta.env as any)?.STRIPE_SECRET_KEY
-      ?? (typeof process !== "undefined" ? process.env?.STRIPE_SECRET_KEY : undefined)) as string | undefined;
+    // STRIPE_SECRET_KEY lookup — try every source Cloudflare may expose it under.
+    const cfEnv: any = (locals as any).runtime?.env ?? {};
+    const candidates: Array<string | undefined> = [
+      cfEnv.STRIPE_SECRET_KEY,
+      (globalThis as any).env?.STRIPE_SECRET_KEY,
+      (globalThis as any).STRIPE_SECRET_KEY,
+      (import.meta.env as any)?.STRIPE_SECRET_KEY,
+      typeof process !== "undefined" ? process.env?.STRIPE_SECRET_KEY : undefined,
+    ];
+    const secret = candidates.find((v) => typeof v === "string" && v.startsWith("sk_")) as string | undefined;
     const origin = new URL(request.url).origin;
 
-    // Demo-mode fallback: no key set → return a fake success URL so the UI still flows.
+    // Demo-mode fallback: no key → return a fake success URL + which sources we tried (for debugging).
     if (!secret) {
       const fakeUrl = `${origin}/success?provider=stripe&id=demo_no_key&mock=1`;
-      return Response.json({ url: fakeUrl, demo: true });
+      return Response.json({
+        url: fakeUrl,
+        demo: true,
+        debug: {
+          localsRuntimeEnv: !!cfEnv.STRIPE_SECRET_KEY,
+          localsEnvKeys: Object.keys(cfEnv).filter((k) => k.includes("STRIPE")),
+          globalThisEnv: !!(globalThis as any).env?.STRIPE_SECRET_KEY,
+          globalThisDirect: !!(globalThis as any).STRIPE_SECRET_KEY,
+          importMeta: !!((import.meta.env as any)?.STRIPE_SECRET_KEY),
+          processEnv: typeof process !== "undefined" && !!process.env?.STRIPE_SECRET_KEY,
+        },
+      });
     }
 
     // Real test-mode Stripe Checkout Session.
