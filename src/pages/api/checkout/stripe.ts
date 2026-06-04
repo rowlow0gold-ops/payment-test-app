@@ -14,38 +14,16 @@ export const POST: APIRoute = async ({ request, locals }) => {
       orderId: string;
     };
 
-    // Lookup secret across every place Cloudflare/Astro may expose it.
-    const lcRuntime: any = (locals as any).runtime ?? {};
-    const lcEnv: any    = lcRuntime.env ?? {};
-    const gAny: any     = globalThis as any;
-
-    const candidates: Array<string | undefined> = [
-      lcEnv.STRIPE_SECRET_KEY,
-      (locals as any).STRIPE_SECRET_KEY,
-      gAny.env?.STRIPE_SECRET_KEY,
-      gAny.STRIPE_SECRET_KEY,
-      (import.meta.env as any)?.STRIPE_SECRET_KEY,
-      typeof process !== "undefined" ? process.env?.STRIPE_SECRET_KEY : undefined,
-    ];
-    const secret = candidates.find((v) => typeof v === "string" && v.startsWith("sk_")) as string | undefined;
+    // STRIPE_SECRET_KEY lives on the Worker's runtime env (set in Cloudflare
+    // dashboard → Variables and Secrets at the runtime level, NOT under Build).
+    const env: any = (locals as any).runtime?.env ?? {};
+    const secret = env.STRIPE_SECRET_KEY as string | undefined;
     const origin = new URL(request.url).origin;
 
     if (!secret) {
+      // Fall back to a mock success so the demo still flows visually.
       const fakeUrl = `${origin}/success?provider=stripe&id=demo_no_key&mock=1`;
-      return Response.json({
-        url: fakeUrl,
-        demo: true,
-        debug: {
-          localsKeys: Object.keys(locals as any),
-          runtimeKeys: Object.keys(lcRuntime),
-          envKeys: Object.keys(lcEnv),
-          globalEnvKeys: gAny.env ? Object.keys(gAny.env) : null,
-          globalDirectKeys: Object.keys(gAny).filter((k) => k.toUpperCase().includes("STRIPE")),
-          processEnvKeys: typeof process !== "undefined" && process.env
-            ? Object.keys(process.env).filter((k) => k.includes("STRIPE") || k.includes("PUBLIC"))
-            : null,
-        },
-      });
+      return Response.json({ url: fakeUrl, demo: true });
     }
 
     // Real test-mode Stripe Checkout Session.
