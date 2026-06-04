@@ -14,31 +14,36 @@ export const POST: APIRoute = async ({ request, locals }) => {
       orderId: string;
     };
 
-    // STRIPE_SECRET_KEY lookup — try every source Cloudflare may expose it under.
-    const cfEnv: any = (locals as any).runtime?.env ?? {};
+    // Lookup secret across every place Cloudflare/Astro may expose it.
+    const lcRuntime: any = (locals as any).runtime ?? {};
+    const lcEnv: any    = lcRuntime.env ?? {};
+    const gAny: any     = globalThis as any;
+
     const candidates: Array<string | undefined> = [
-      cfEnv.STRIPE_SECRET_KEY,
-      (globalThis as any).env?.STRIPE_SECRET_KEY,
-      (globalThis as any).STRIPE_SECRET_KEY,
+      lcEnv.STRIPE_SECRET_KEY,
+      (locals as any).STRIPE_SECRET_KEY,
+      gAny.env?.STRIPE_SECRET_KEY,
+      gAny.STRIPE_SECRET_KEY,
       (import.meta.env as any)?.STRIPE_SECRET_KEY,
       typeof process !== "undefined" ? process.env?.STRIPE_SECRET_KEY : undefined,
     ];
     const secret = candidates.find((v) => typeof v === "string" && v.startsWith("sk_")) as string | undefined;
     const origin = new URL(request.url).origin;
 
-    // Demo-mode fallback: no key → return a fake success URL + which sources we tried (for debugging).
     if (!secret) {
       const fakeUrl = `${origin}/success?provider=stripe&id=demo_no_key&mock=1`;
       return Response.json({
         url: fakeUrl,
         demo: true,
         debug: {
-          localsRuntimeEnv: !!cfEnv.STRIPE_SECRET_KEY,
-          localsEnvKeys: Object.keys(cfEnv).filter((k) => k.includes("STRIPE")),
-          globalThisEnv: !!(globalThis as any).env?.STRIPE_SECRET_KEY,
-          globalThisDirect: !!(globalThis as any).STRIPE_SECRET_KEY,
-          importMeta: !!((import.meta.env as any)?.STRIPE_SECRET_KEY),
-          processEnv: typeof process !== "undefined" && !!process.env?.STRIPE_SECRET_KEY,
+          localsKeys: Object.keys(locals as any),
+          runtimeKeys: Object.keys(lcRuntime),
+          envKeys: Object.keys(lcEnv),
+          globalEnvKeys: gAny.env ? Object.keys(gAny.env) : null,
+          globalDirectKeys: Object.keys(gAny).filter((k) => k.toUpperCase().includes("STRIPE")),
+          processEnvKeys: typeof process !== "undefined" && process.env
+            ? Object.keys(process.env).filter((k) => k.includes("STRIPE") || k.includes("PUBLIC"))
+            : null,
         },
       });
     }
